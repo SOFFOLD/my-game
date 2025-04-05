@@ -1,2 +1,2 @@
 # my-game
-git clone https://github.com/uzivatel/my-game.git
+git clone https://github.com/SOFFOLD/my-game.git

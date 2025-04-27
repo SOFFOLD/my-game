@@ -1,52 +1,142 @@
 #include <iostream>
+#include <windows.h>
 using namespace std;
-void vesnice(int zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxmana){
-    int a;
+void barva(int barva){
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, barva);
+}
+void vesnice(int zlato, int zivoty , int mana, int sila, int maxHp, int maxmana){
+    int a, b;
     cout << "Zde muzete:" << endl;
-    cout << "(1)   Doplnovat si zivoty - 500 zlata" << endl;
-    cout << "(2)   Vylepsit max zivoty - 500 zlata"<< endl;
-    cout << "(3)   Vylepsit max manu - 500 zlata" << endl;
-    cout << "(4)   Vylepsit utok/schopnosti - 500 zlata" << endl;
-    cin >> a;
-    switch (a){
-        case 1:
-            if(zlato > 500){
-                zivoty = maxHp;
-                zlato -= 500;
-                cout << "Mate ted :" << zivoty << "zivotu";
-            }else{
-                cout << "Nemate dostatek zlata";
-            }
-
-        break;
-        case 2:
-           if(zlato > 500){
-                maxHp += 1;
-                zlato -= 500;
-                cout << "Mate ted :" << zivoty << "zivotu";
-            }else{
-                cout << "Nemate dostatek zlata";
-            }
-        break;
-        case 3:
-           if(zlato > 500){
-                maxmana += 1;
-                zlato -= 500;
-                cout << "Mate ted :" << zivoty << "zivotu";
-            }else{
-                cout << "Nemate dostatek zlata";
-            }
-        break;
-        case 4:
-           if(zlato > 500){
-                sila += 1;
-                zlato -= 500;
-                cout << "Mate ted :" << zivoty << "zivotu";
-            }else{
-                cout << "Nemate dostatek zlata";
-            }
-        break;
-    }
+     do{
+        cout << "(1)   Doplnovat si zivoty - 500 zlata" << endl;
+        cout << "(2)   Vylepsit max zivoty - 500 zlata"<< endl;
+        cout << "(3)   Vylepsit max manu - 500 zlata" << endl;
+        cout << "(4)   Vylepsit damage/schopnosti - 500 zlata" << endl;
+        cout << "(5)   Skip(jestli nemate zlato)"<<endl;
+        cout << "Vase statistika: " << endl;
+        cout << "   Zivoty: "<< zivoty<<"/"<<maxHp<<endl;
+        cout << "   Mana: "<< mana<<"/"<<maxmana<<endl;
+        cout << "   Sila: "<< sila <<endl;
+        cout << "   Zlato: "<< zlato <<endl;
+        cin >> a;
+        switch (a){
+            case 1:
+                if(zlato >= 500){
+                    if(zivoty == maxHp){
+                        barva(4);
+                        cout << "POZOR : Uz mate maximalne zivotu, vyberte si neco jineho"<< endl;
+                        b = 1;
+                        barva(7);
+                    }else{
+                        zivoty = maxHp;
+                        zlato -= 500;
+                        cout << "Mate ted :" << zivoty << "zivotu"<< endl;
+                        barva(14);
+                        cout << "Mate: "<< zlato << " zlata"<< endl;
+                        barva(7);
+                        cout << "Chcete si jeste neco vybrat? (0 = ne, 1 = ano): ";
+                        do{
+                        cin >> b;
+                        }while(b > 1 || b <0);
+                        cout << "--------------------------------------------" << endl;
+                    }
+                }else{
+                    barva(4);
+                    cout << "Nemate dostatek zlata"<< endl;
+                    barva(7);
+                    cout << "Vyberte si neco jineho (0 = ne, 1 = ano): ";
+                    do{
+                    cin >> b;
+                    }while(b > 1 || b <0);
+                    cout << "--------------------------------------------" << endl;
+                }
+            break;
+            case 2:
+               if(zlato >= 500){
+                    maxHp += 1;
+                    zlato -= 500;
+                    cout << "Vas maximalni pocet zivotu ted je: " << maxHp<< endl;
+                    barva(14);
+                    cout << "Mate: "<< zlato << " zlata"<< endl;
+                    barva(7);
+                    cout << "Chcete si jeste neco vybrat? (0 = ne, 1 = ano): " ;
+                    do{
+                    cin >> b;
+                    }while(b > 1 || b <0);
+                    cout << "--------------------------------------------" << endl;
+                }else{
+                    barva(4);
+                    cout << "Nemate dostatek zlata"<< endl;
+                    barva(7);
+                    cout << "Vyberte si neco jineho (0 = ne, 1 = ano): ";
+                    do{
+                    cin >> b;
+                    }while(b > 1 || b <0);
+                    cout << "--------------------------------------------" << endl;
+                }
+            break;
+            case 3:
+               if(zlato >= 500){
+                    maxmana += 1;
+                    zlato -= 500;
+                    cout << "Vase maximalni pocet many ted je: " << maxmana << endl;
+                    barva(14);
+                    cout << "Mate: "<< zlato << " zlata"<< endl;
+                    barva(7);
+                    cout << "Chcete si jeste neco vybrat? (0 = ne, 1 = ano): ";
+                    do{
+                    cin >> b;
+                    }while(b > 1 || b <0);
+                    cout << "--------------------------------------------" << endl;
+                }else{
+                    barva(4);
+                    cout << "Nemate dostatek zlata"<< endl;
+                    barva(7);
+                    cout << "Vyberte si neco jineho (0 = ne, 1 = ano): ";
+                    do{
+                    cin >> b;
+                    }while(b > 1 || b <0);
+                    cout << "--------------------------------------------" << endl;
+                }
+            break;
+            case 4:
+               if(zlato >= 500){
+                    sila += 1;
+                    zlato -= 500;
+                    cout << "Vas damage je ted: " << sila<< endl;
+                    barva(14);
+                    cout << "Mate: "<< zlato << " zlata"<< endl;
+                    barva(7);
+                    cout << "Chcete si jeste neco vybrat? (0 = ne, 1 = ano): ";
+                    do{
+                    cin >> b;
+                    }while(b > 1 || b <0);
+                    cout << "--------------------------------------------" << endl;
+                }else{
+                    barva(4);
+                    cout << "Nemate dostatek zlata"<< endl;
+                    barva(7);
+                    cout << "Vyberte si neco jineho (0 = ne, 1 = ano): ";
+                    do{
+                    cin >> b;
+                    }while(b > 1 || b <0);
+                    cout << "--------------------------------------------" << endl;
+                }
+            break;
+            case 5:
+                cout << "Jste si jisti? (0 = ne, 1 = ano): ";
+                do{
+                cin >> b;
+                if(b==1){
+                    b = 0;
+                }else{
+                    b = 1;
+                }
+                }while(b > 1 || b < 0);
+            break;
+        }
+    }while(b != 0);
 }
 void paladin(){
     cout << "--------------------------------------------" << endl;
@@ -93,64 +183,99 @@ void strelec(){
     cout << "   Ustupny vystrel - Vystreli a uskoci dozadu, mana - 2"<< endl;
 }
 int main(){
-    int Hp, zlato = 500, mana, maxmana, maxHp, sila,classy, y;
+    int Hp = 1, zlato = 500, mana, maxmana, maxHp, sila,classy, y;
     string inventory[5] , Mc;
-
-    cout << "----------------Vitej v RPG hre--------------"<< endl;
+    if(Hp != 0){
+    cout << "----------------Vitej v RPG hre----------------"<< endl;
     cout << "Vyber si class: "<< endl;
     do{
     cout << "Paladin = 1, assasin = 2, mag = 3, strelec = 4: "<< endl;
         do{
         cin >> classy;
-        }while(classy <= 1 && classy >= 4);
+        }while(classy < 1 || classy > 4);
         switch(classy){
             case 1:
                 paladin();
-                cout << "potvrdit? (0=ne, 1=ano): ";
+                cout << "potvrdit? (0 = ne, 1 = ano): ";
+                do{
                 cin >> y;
-                cout << "--------------------------------------------" << endl;
-                if(y = 0){
+                }while(y < 0 || y > 1);
+                if(y == 0){
+                    y = 0;
+                    cout << "--------------------------------------------" << endl;
+                }else{
+                    cout << "Potvrzeni bylo uspesne, ted jste: PALADIN" << endl;
+                    cout << "--------------------------------------------" << endl;
+                    maxHp = 10;
                     Hp = 10;
                     sila = 6;
                     mana = 10;
+                    maxmana = 10;
                 }
             break;
             case 2:
                 assasin();
                 cout << "potvrdit? (0=ne, 1=ano): ";
+                do{
                 cin >> y;
-                cout << "--------------------------------------------" << endl;
-                if(y = 0){
+                }while(y < 0 || y > 1);
+                if(y == 0){
+                    y = 0;
+                    cout << "--------------------------------------------" << endl;
+                }else{
+                    cout << "Potvrzeni bylo uspesne, ted jste: ASSASIN" << endl;
+                    cout << "--------------------------------------------" << endl;
                     Hp = 6;
+                    maxHp = 6;
                     sila = 8;
                     mana = 12;
+                    maxmana = 12;
                 }
             break;
             case 3:
                 mag();
                 cout << "potvrdit? (0=ne, 1=ano): ";
+                do{
                 cin >> y;
-                cout << "--------------------------------------------" << endl;
-                if(y = 0){
+                }while(y < 0 || y > 1);
+                if(y == 0){
+                    y = 0;
+                    cout << "--------------------------------------------" << endl;
+                }else{
+                    cout << "Potvrzeni bylo uspesne, ted jste: MAG" << endl;
+                    cout << "--------------------------------------------" << endl;
                     Hp = 5;
+                    maxHp = 5;
                     sila = 7;
                     mana = 15;
+                    maxmana = 15;
                 }
             break;
             case 4:
                 strelec();
                 cout << "potvrdit? (0=ne, 1=ano): ";
+                do{
                 cin >> y;
-                cout << "--------------------------------------------" << endl;
-                if(y = 0){
+                }while(y < 0 || y > 1);
+                if(y == 0){
+                    y = 0;
+                    cout << "--------------------------------------------" << endl;
+                }else{
+                    cout << "Potvrzeni bylo uspesne, ted jste: STRELEC" << endl;
+                    cout << "--------------------------------------------" << endl;
                     Hp = 7;
+                    maxHp = 7;
                     sila = 6;
                     mana = 8;
+                    maxmana = 8;
                 }
             break;
         }
-    }while(y != 0);
+    }while(y == 0);
 
     cout << "Prisli jste do vesnice" << endl;
     vesnice(zlato, Hp, mana, sila, maxHp, maxmana);
+    }else{
+    return 0;
+    }
 }

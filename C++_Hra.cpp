@@ -2,6 +2,14 @@
 #include <windows.h>
 using namespace std;
 
+void stats(int zivoty, int sila, int mana, int maxmana, int maxzivoty, int zlato){
+    cout << "Vase statistika: " << endl;
+    cout << "   Zivoty: "<< zivoty<<"/"<<maxzivoty<<endl;
+    cout << "   Mana: "<< mana<<"/"<<maxmana<<endl;
+    cout << "   Sila: "<< sila <<endl;
+    cout << "   Zlato: "<< zlato <<endl;
+}
+
 bool alldead(int M[], int b) {
     for (int a = 0; a < b; a++) {
         if (M[a] > 0) return false;
@@ -47,7 +55,7 @@ void boj(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxman
                             }
                                 cout << "Monstrum " << a+1 << " ma: " << M[a] << " zivotu" << endl;
                         }
-                        mana -= 4;
+                        mana -= 2;
                         }else{
                             cout << "Nemate dostatek many: " << mana << endl;
                             u = 0;
@@ -244,11 +252,7 @@ void vesnice(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &ma
         cout << "(3)   Vylepsit max manu - 500 zlata" << endl;
         cout << "(4)   Vylepsit damage/schopnosti - 500 zlata" << endl;
         cout << "(5)   Skip(jestli nemate zlato)"<<endl;
-        cout << "Vase statistika: " << endl;
-        cout << "   Zivoty: "<< zivoty<<"/"<<maxHp<<endl;
-        cout << "   Mana: "<< mana<<"/"<<maxmana<<endl;
-        cout << "   Sila: "<< sila <<endl;
-        cout << "   Zlato: "<< zlato <<endl;
+        stats(zivoty,sila,mana,maxmana,maxHp,zlato);
         cin >> a;
         switch (a){
             case 1:
@@ -522,23 +526,47 @@ int main(){
     cout << "Potkali jste monstrum" << endl;
     b = 1;
     monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,klass,M,b,p);
-    cout << "Vase statistika: " << endl;
-    cout << "   Zivoty: "<< Hp<<"/"<<maxHp<<endl;
-    cout << "   Mana: "<< mana<<"/"<<maxmana<<endl;
-    cout << "   Sila: "<< sila <<endl;
-    cout << "   Zlato: "<< zlato <<endl;
+    stats(Hp,sila,mana,maxmana,maxHp,zlato);
     cout << "Potkali jste monstrum" << endl;
     b = 1;
     p = 0;
     monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,klass,M,b,p);
+    stats(Hp,sila,mana,maxmana,maxHp,zlato);
     cout << "Potkali jste 2 monstra" << endl;
     b = 2;
     p = 0;
     monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,klass,M,b,p);
+    stats(Hp,sila,mana,maxmana,maxHp,zlato);
     cout << "Potkali jste mini Bosse" << endl;
-    b = 2;
+    b = 1;
     p = 0;
     miniboss(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,klass,MB,b,p);
+    stats(Hp,sila,mana,maxmana,maxHp,zlato);
+    cout << "Prisli jste do vesnice" << endl;
+    vesnice(zlato, Hp, mana, sila, maxHp, maxmana);
+    cout << "--------------------------------------------" << endl;
+    cout << "Potkali jste monstrum" << endl;
+    b = 1;
+    p = 0;
+    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,klass,M,b,p);
+    stats(Hp,sila,mana,maxmana,maxHp,zlato);
+    cout << "Potkali jste monstrum" << endl;
+    b = 2;
+    p = 0;
+    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,klass,M,b,p);
+    stats(Hp,sila,mana,maxmana,maxHp,zlato);
+    cout << "Potkali jste 2 monstra" << endl;
+    b = 2;
+    p = 0;
+    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,klass,M,b,p);
+    stats(Hp,sila,mana,maxmana,maxHp,zlato);
+    cout << "Potkali jste mini Bosse" << endl;
+    b = 1;
+    p = 0;
+    miniboss(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,klass,MB,b,p);
+    stats(Hp,sila,mana,maxmana,maxHp,zlato);
+    cout << "Prisli jste do vesnice" << endl;
+    vesnice(zlato, Hp, mana, sila, maxHp, maxmana);
     }else if(Hp <= 0){
     cout << "--------------PROHRALI JSTE--------------";
     return 0;

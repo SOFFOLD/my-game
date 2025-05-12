@@ -2,9 +2,18 @@
 #include <windows.h>
 using namespace std;
 
+bool alldead(int M[], int b) {
+    for (int a = 0; a < b; a++) {
+        if (M[a] > 0) return false;
+    }
+    return true;
+}
+
+
 void boj(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxmana, string skill1, string skill2,string klass,int Msila,int M[],int b,int &p){
     int s,u = 1;
     do{
+        u = 1;
         cout << "Vyberte utok: " << endl;
         cout << "1)    Obycejny utok: " << sila << " sily" << endl;
         cout << "2)    " << skill1 << endl;
@@ -30,15 +39,13 @@ void boj(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxman
             break;
             case 2:
                 if(klass == "paladin"){
-                    if(mana >= 4){
+                    if(mana >= 2){
                         for(int a = 0; a < b; a++){
                             M[a] -= 2;
                             if(M[a] < 0){
                                 M[a] = 0;
                             }
-                            for(int a = 0; a < b;a++){
                                 cout << "Monstrum " << a+1 << " ma: " << M[a] << " zivotu" << endl;
-                            }
                         }
                         mana -= 4;
                         }else{
@@ -88,25 +95,23 @@ void boj(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxman
             break;
             case 3:
                 if(klass == "paladin"){
-                    if(mana >= 2){
+                    if(mana >= 4){
                         if(zivoty == maxHp){
                             cout << "Uz mate maximalne zivotu: " << zivoty << endl;
                             u = 0;
-                        }else{
-                            if(zivoty+1 == maxHp){
-                                zivoty = maxHp;
-                                cout << "Ted mate: " << zivoty << " zivotu" << endl;
                             }else{
-                                zivoty += 2;
+                                zivoty = zivoty + b*2;
                                 cout << "Ted mate: " << zivoty << " zivotu" << endl;
+                                if(zivoty > maxHp){
+                                    zivoty = maxHp;
+                                }
                             }
-                        }
-                        mana -= 2;
-                    }else{
-                        cout << "Nemate dostatek many: " << mana << endl;
+                            mana -= 2;
+                        }else{
+                            cout << "Nemate dostatek many: " << mana << endl;
                         u = 0;
-                    }
 
+                    }
                 }else if(klass == "assasin"){
                     if(mana >= 4){
                         for(int a = 0;a < b; a++){
@@ -168,29 +173,62 @@ void boj(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxman
             break;
         }
         cout << "--------------------------------------------" << endl;
-        if(M[0]==0 && M[1]==0&&M[2] == 0){
+        if (alldead(M,b)){
             p = 1;
-            cout << "Zabili jste monstrum"<< endl;
+            cout << "Zabili jste " << b << " monstrum" << endl;
         }
     }while(u != 1);
 }
-void monstrum(int &zlato ,int &zivoty ,int &mana,int sila ,int &maxHp ,int &maxmana ,string skill1 ,string skill2 ,string klass,int M[],int b){
-    int Msila = 2, p;
+void monstrum(int &zlato ,int &zivoty ,int &mana,int sila ,int &maxHp ,int &maxmana ,string skill1 ,string skill2 ,string klass,int M[],int b,int &p){
+    int Msila = 2;
     for(int a = 0;a < 3 ; a++){
         M[a] = 0;
     }
     for(int a = 0;a < b ; a++){
-        M[a] = 20;
+        M[a] = 5;
     }
     do{
         boj(zlato,zivoty,mana,sila,maxHp,maxmana,skill1,skill2,klass,Msila,M,b,p);
-        cout << "Monstrum na tahu" << endl;
-        for(int a = 0; a < b;a++){
-            cout << "-" << Msila << " zivotu od monstrum" << endl;
+        if(p == 0){
+           cout << "Monstrum na tahu" << endl;
+            for(int a = 0; a < b;a++){
+                if(M[a] > 0){
+                    cout << "-" << Msila << " zivotu od monstrum" << endl;
+                }
+            }
+            zivoty -= b*Msila;
+        }else{
+            break;
         }
-        zivoty -= b*Msila;
-    }while(p != 1 || zivoty > 0);
-    cout << "--------V tomto setkani jste vyhrali--------" << endl;
+
+    }while(!alldead(M,b) && zivoty > 0);
+    if (zivoty <= 0){
+            cout << "--------------PROHRALI JSTE--------------"<<endl;
+        }else if(alldead(M,b)){
+            cout << "--------V tomto setkani jste vyhrali--------" << endl;
+        }
+}
+
+void miniboss(int &zlato ,int &zivoty ,int &mana,int sila ,int &maxHp ,int &maxmana ,string skill1 ,string skill2 ,string klass,int MB[],int b,int &p){
+    int MBsila = 4;
+    MB[0] = 15;
+    do{
+        boj(zlato,zivoty,mana,sila,maxHp,maxmana,skill1,skill2,klass,MBsila,MB,b,p);
+        if(p == 0){
+           cout << "Mini boss na tahu" << endl;
+                if(MB[0] > 0){
+                    cout << "-" << MBsila << " zivotu od mini bosse" << endl;
+                }
+            zivoty -= MBsila;
+        }else{
+            break;
+        }
+    }while(p != 1 && zivoty > 0);
+    if (zivoty <= 0){
+            cout << "--------------PROHRALI JSTE--------------";
+        }else{
+            cout << "--------V tomto setkani jste vyhrali--------" << endl;
+        }
 }
 
 void barva(int barva){
@@ -338,8 +376,8 @@ void paladin(){
     cout << "   Mana - 10/10"<< endl;
     cout << "Schopnosti: " << endl;
     cout << "   Utok - Utok za 6 damage" << endl;
-    cout << "   Bozsky vypad - 2 damage vsem nepratelum, mana - 4"<< endl;
-    cout << "   Bozi pozehnani - Heal - +2 zivoty, mana - 2"<< endl;
+    cout << "   Bozsky vypad - 2 damage vsem nepratelum, mana - 2"<< endl;
+    cout << "   Bozi pozehnani - Heal - +3 zivoty za kazdeho monstra, mana - 4"<< endl;
 }
 void assasin(){
     cout << "--------------------------------------------" << endl;
@@ -375,9 +413,9 @@ void strelec(){
     cout << "   Ustupny vystrel - Vystreli a uskoci dozadu, mana - 2"<< endl;
 }
 int main(){
-    int Hp = 1, zlato = 500, mana, maxmana, maxHp, sila,classy, y,b=1, M[b];
+    int Hp = 1, zlato = 500, mana, maxmana, maxHp, sila,classy, y,b=1, M[3],p=0,MB[1];
     string inventory[5] ,skill1,skill2,klass;
-    if(Hp != 0){
+    if(Hp > 0){
     cout << "----------------Vitej v RPG hre----------------"<< endl;
     cout << "Vyber si class: "<< endl;
     do{
@@ -403,8 +441,8 @@ int main(){
                     sila = 6;
                     mana = 10;
                     maxmana = 10;
-                    skill1 = "Bozsky vypad - 2 damage vsem nepratelum, mana - 4";
-                    skill2 = "Bozi pozehnani - Heal - +2 zivoty, mana - 2";
+                    skill1 = "Bozsky vypad - 2 damage vsem nepratelum, mana - 2";
+                    skill2 = "Bozi pozehnani - Heal - +3 zivoty za kazdeho monstra, mana - 4";
                     klass = "paladin";
                 }
             break;
@@ -483,8 +521,25 @@ int main(){
     cout << "--------------------------------------------" << endl;
     cout << "Potkali jste monstrum" << endl;
     b = 1;
-    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,klass,M,b);
-    }else{
+    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,klass,M,b,p);
+    cout << "Vase statistika: " << endl;
+    cout << "   Zivoty: "<< Hp<<"/"<<maxHp<<endl;
+    cout << "   Mana: "<< mana<<"/"<<maxmana<<endl;
+    cout << "   Sila: "<< sila <<endl;
+    cout << "   Zlato: "<< zlato <<endl;
+    cout << "Potkali jste monstrum" << endl;
+    b = 1;
+    p = 0;
+    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,klass,M,b,p);
+    cout << "Potkali jste 2 monstra" << endl;
+    b = 2;
+    p = 0;
+    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,klass,M,b,p);
+    cout << "Potkali jste mini Bosse" << endl;
+    b = 2;
+    p = 0;
+    miniboss(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,klass,MB,b,p);
+    }else if(Hp <= 0){
     cout << "--------------PROHRALI JSTE--------------";
     return 0;
     }

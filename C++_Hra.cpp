@@ -48,9 +48,8 @@ bool alldead(int M[], int b) {
     return true;
 }
 
-void boj(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxmana, string skill1, string skill2,string skill3, string skill4,int skil1, int skil2,bool skilll1,bool skilll2, string klass, int Msila, int M[], int b, int &p){
+void boj(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxmana, string skill1, string skill2,string skill3, string skill4,int skil1, int skil2,bool skilll1,bool skilll2, string klass, int Msila, int M[], int b, int &p, bool &jedovatadyka){
     int s, u = 1;
-    bool jedovatadyka = false;
     do{
         u = 1;
         cout << "Vyberte utok: " << endl;
@@ -63,7 +62,7 @@ void boj(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxman
         if(skilll2 == true){
             cout << "3)    " << skill3 << skil2 << skill4 << endl;
         }else{
-            cout << "2)    " << skill3 << endl;
+            cout << "3)    " << skill3 << endl;
         }
         cin >> s;
         while(s > 3 || s < 1) cin >> s;
@@ -71,14 +70,12 @@ void boj(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxman
             case 1:
                 for(int a = 0; a < b; a++){
                     if(klass == "assasin" && jedovatadyka == true){
-                        int sila2 = sila;
-                        sila2 *= 2;
-                        jedovatadyka = false;
                         if(M[a] > 0){
-                            M[a] -= sila2*2;
+                            M[a] -= sila*2;
                             if(M[a] < 0){
                                 M[a] = 0;
-                                cout << "Monstrum " << a+1 << " ma: " << M[a] << " zivotu" << endl;
+                                cout << "- " << sila*2 << " zivotu pro monstrum "<< a+1 << " ted ma: " << M[a] << " zivotu" << endl;
+                                jedovatadyka = false;
                                 break;
                             }
                         }
@@ -89,11 +86,11 @@ void boj(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxman
                         } else {
                             if(M[a] > 0){
                                 M[a] -= sila;
+                                    mana -= 1;
                                 if(M[a] < 0){
                                     M[a] = 0;
-                                    cout << "Monstrum " << a+1 << " ma: " << M[a] << " zivotu" << endl;
+                                    cout << "- " << sila << " zivotu pro monstrum "<< a+1 << " ted ma: " << M[a] << " zivotu" << endl;
                                     break;
-                                    mana -= 1;
                                 }
                             }
                         }
@@ -102,7 +99,7 @@ void boj(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxman
                             M[a] -= sila;
                             if(M[a] < 0){
                                 M[a] = 0;
-                                cout << "Monstrum " << a+1 << " ma: " << M[a] << " zivotu" << endl;
+                                cout << "- " << sila << " zivotu pro monstrum "<< a+1 << " ted ma: " << M[a] << " zivotu" << endl;
                                 break;
                             }
                         }
@@ -113,9 +110,9 @@ void boj(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxman
                 if(klass == "paladin"){
                     if(mana >= 3){
                         for(int a = 0; a < b; a++){
-                            M[a] -= 3;
+                            M[a] -= skil1;
                             if(M[a] < 0) M[a] = 0;
-                            cout << "Monstrum " << a+1 << " ma: " << M[a] << " zivotu" << endl;
+                            cout << "- " << skil1 << " zivotu pro monstrum "<< a+1 << " ted ma: " << M[a] << " zivotu" << endl;
                         }
                         mana -= 2;
                     } else {
@@ -134,9 +131,11 @@ void boj(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxman
                     if(mana >= 6){
                         for(int a = 0; a < b; a++){
                             if(M[a] > 0){
-                                M[a] -= 9;
-                                if(M[a] < 0) M[a] = 0;
-                                cout << "Monstrum " << a+1 << " ma: " << M[a] << " zivotu" << endl;
+                                M[a] -= skil1;
+                                if(M[a] < 0){
+                                   M[a] = 0;
+                                }
+                                cout << "- " << skil1 << " zivotu pro monstrum "<< a+1 << " ted ma: " << M[a] << " zivotu" << endl;
                                 break;
                             }
                         }
@@ -148,8 +147,11 @@ void boj(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxman
                 } else if(klass == "strelec"){
                     if(mana >= 4){
                         for(int a = 0; a < b; a++){
-                            M[a] -= 6;
-                            if(M[a] < 0) M[a] = 0;
+                            M[a] -= skil1;
+                            if(M[a] < 0){
+                                M[a] = 0;
+                            }
+                            cout << "- " << skil1 << " zivotu pro monstrum "<< a+1 << " ted ma: " << M[a] << " zivotu" << endl;
                         }
                         mana -= 4;
                     } else {
@@ -165,9 +167,11 @@ void boj(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxman
                             cout << "Uz mate maximalne zivotu: " << zivoty << endl;
                             u = 0;
                         }else{
-                            zivoty += b*2;
-                            cout << "Ted mate: " << zivoty << " zivotu" << endl;
-                            if(zivoty > maxHp) zivoty = maxHp;
+                            zivoty += b*skil2;
+                            if(zivoty > maxHp){
+                               zivoty = maxHp;
+                            }
+                        cout << "Ted mate: " << zivoty << " zivotu" << endl;
                         }
                         mana -= 6;
                     }else{
@@ -177,6 +181,7 @@ void boj(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxman
                 } else if(klass == "assasin"){
                     if(mana >= 3){
                             jedovatadyka = true;
+                            cout << "Pristi utok bude mit 2x vetsi damage" << endl;
                             mana -= 3;
                     }else{
                         cout << "Nemate dostatek many: " << mana << endl;
@@ -187,7 +192,7 @@ void boj(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxman
                         if(zivoty == maxHp){
                             cout << "Uz mate maximalne zivotu" << endl;
                         }else{
-                            zivoty += 5;
+                            zivoty += skil2;
                             if(zivoty > maxHp) zivoty = maxHp;
                         }
                         mana -= 4;
@@ -206,7 +211,7 @@ void boj(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxman
                             }
                         }
                         for(int a = 0; a < b; a++){
-                            cout << "Monstrum " << a+1 << " ma: " << M[a] << " zivotu" << endl;
+                            cout << "- " << skil1 << " zivotu pro monstrum "<< a+1 << " ted ma: " << M[a] << " zivotu" << endl;
                             mana -= 3;
                         }
                     }else{
@@ -224,7 +229,7 @@ void boj(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxman
     }while(u != 1);
 }
 
-void monstrum(int &zlato, int &zivoty, int &mana, int sila, int &maxHp, int &maxmana, string skill1, string skill2,string skill3, string skill4,int skil1, int skil2,bool skilll1,bool skilll2, string klass, int M[], int b, int &p, int &expi, int &exp, int &level){
+void monstrum(int &zlato, int &zivoty, int &mana, int &sila, int &maxHp, int &maxmana, string skill1, string skill2,string skill3, string skill4,int skil1, int skil2,bool skilll1,bool skilll2, string klass, int M[], int b, int &p, int &expi, int &exp, int &level,bool &jedovatadyka){
     int Msila = 1;
     for(int a = 0; a < 3 ; a++){
         M[a] = 0;
@@ -233,7 +238,7 @@ void monstrum(int &zlato, int &zivoty, int &mana, int sila, int &maxHp, int &max
         M[a] = 5;
     }
     do {
-        boj(zlato,zivoty,mana,sila,maxHp,maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,Msila,M,b,p);
+        boj(zlato,zivoty,mana,sila,maxHp,maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,Msila,M,b,p,jedovatadyka);
         if(p == 0){
             cout << "Monstrum na tahu" << endl;
             for(int a = 0; a < b; a++) if(M[a] > 0){
@@ -261,12 +266,12 @@ void monstrum(int &zlato, int &zivoty, int &mana, int sila, int &maxHp, int &max
         if(expi >= exp) {
             expi -= exp;
             level++;
-            expi -= exp;
+            exp += 5;
             zivoty = maxHp;
             mana = maxmana;
             barva(1);
             cout << "Novy level: " << (level-1) << " => " << level << endl;
-            barva(7);
+
             int r = ranc();
             if (r == 1) {
                 sila += 1;
@@ -281,15 +286,17 @@ void monstrum(int &zlato, int &zivoty, int &mana, int sila, int &maxHp, int &max
                 cout << "Ted mate " << maxmana << " maximalni many" << endl;
             }
         }
+        barva(7);
+        srand(time(0));
     }
 }
 
 
-void miniboss(int &zlato, int &zivoty, int &mana, int sila, int &maxHp, int &maxmana, string skill1, string skill2,string skill3, string skill4,int skil1, int skil2,bool skilll1,bool skilll2, string klass, int MB[], int b, int &p, int &expi, int &exp, int &level){
+void miniboss(int &zlato, int &zivoty, int &mana, int &sila, int &maxHp, int &maxmana, string skill1, string skill2,string skill3, string skill4,int skil1, int skil2,bool skilll1,bool skilll2, string klass, int MB[], int b, int &p, int &expi, int &exp, int &level,bool &jedovatadyka){
     int MBsila = 2;
     MB[0] = 15;
     do {
-        boj(zlato,zivoty,mana,sila,maxHp,maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,MBsila,MB,b,p);
+        boj(zlato,zivoty,mana,sila,maxHp,maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,MBsila,MB,b,p,jedovatadyka);
         if(p == 0){
             cout << "Mini boss na tahu" << endl;
             if(MB[0] > 0) cout << "-" << MBsila << " zivotu od mini bosse" << endl;
@@ -307,9 +314,10 @@ void miniboss(int &zlato, int &zivoty, int &mana, int sila, int &maxHp, int &max
         if(expi >= exp) {
             expi -= exp;
             level++;
-            expi -= exp;
+            exp += 5;
             zivoty = maxHp;
             mana = maxmana;
+            barva(1);
             cout << "Novy level: " << (level-1) << " => " << level << endl;
             int r = ranc();
             if (r == 1) {
@@ -325,26 +333,28 @@ void miniboss(int &zlato, int &zivoty, int &mana, int sila, int &maxHp, int &max
                 cout << "Ted mate " << maxmana << " maximalni many" << endl;
             }
         }
+        srand(time(0));
+        barva(7);
     }
 }
 
-void Geargrind(int &zlato ,int &zivoty ,int &mana,int sila ,int &maxHp ,int &maxmana ,string skill1 ,string skill2 ,string skill3, string skill4,int skil1, int skil2,bool skilll1,bool skilll2,string klass,int B[],int b,int &p){
-    int Bsila = 3, k;
+void Geargrind(int &zlato ,int &zivoty ,int &mana,int sila ,int &maxHp ,int &maxmana ,string skill1 ,string skill2 ,string skill3, string skill4,int skil1, int skil2,bool skilll1,bool skilll2,string klass,int B[],int b,int &p,bool &jedovatadyka){
+    int Bsila = 3, k,n;
     B[0] = 50;
     do{
-        boj(zlato,zivoty,mana,sila,maxHp,maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,Bsila,B,b,p);
+        boj(zlato,zivoty,mana,sila,maxHp,maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,Bsila,B,b,p,jedovatadyka);
         if(p == 0){
            cout << "Geargrind na tahu" << endl;
-        if(ranc() == 1){
+           n = ranc();
+        if(n == 1){
             cout << "Geargrind je na hranici roztrzeni, ale utoci jako nikdy predtim!" << endl;
             Bsila *= 2;
             k = 1;
+            srand(time(0));
         }
-            for(int a = 0; a < b;a++){
-                if(B[a] > 0){
-                    cout << "-" << Bsila << " zivotu od Geargrindu" << endl;
-                }
-            }
+        if(B[0] > 0){
+            cout << "-" << Bsila << " zivotu od Geargrindu" << endl;
+        }
             zivoty -= Bsila;
         }else{
             break;
@@ -353,7 +363,6 @@ void Geargrind(int &zlato ,int &zivoty ,int &mana,int sila ,int &maxHp ,int &max
             Bsila /= 2;
             k = 0;
         }
-        srand(time(0));
         Bsila += 3;
     }while(!alldead(B,b) && zivoty > 0);
     if (zivoty <= 0){
@@ -364,7 +373,7 @@ void Geargrind(int &zlato ,int &zivoty ,int &mana,int sila ,int &maxHp ,int &max
 }
 
 
-void vesnice(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxmana, int skil1, int skil2,bool skilll1,bool skilll2){
+void vesnice(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &maxmana, int &skil1, int &skil2,bool skilll1,bool skilll2,string skill1,string skill2,string skill3,string skill4){
     int a, b = 0, v,t;
     cout << "Zde muzete:" << endl;
      do{
@@ -525,7 +534,7 @@ void vesnice(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &ma
                             if(zlato >= 9){
                                 skil1 += 1;
                                 zlato -= 9;
-                                cout << "Upgrade prvniho skilu o 1" << endl;
+                                cout << skill1 << skil1 << skill2 << endl;
                                 barva(14);
                                 cout << "Mate: "<< zlato << " zlata"<< endl;
                                 barva(7);
@@ -558,7 +567,7 @@ void vesnice(int &zlato, int &zivoty , int &mana, int &sila, int &maxHp, int &ma
                             if(zlato >= 9){
                                 skil2 += 1;
                                 zlato -= 9;
-                                cout << "Upgrade druheho skilu o 1" << endl;
+                                cout << skill3 << skil2 << skill4 << endl;
                                 barva(14);
                                 cout << "Mate: "<< zlato << " zlata"<< endl;
                                 barva(7);
@@ -648,9 +657,9 @@ void strelec(){
 }
 int main(){
     srand(time(0));
-    int Hp = 1, zlato = 8, mana, maxmana, maxHp, sila, classy, y, b=1, M[3],p=0,MB[1],B[1],exp = 20, n = 2, expi, level = 1, skil1, skil2;
+    int Hp = 1, zlato = 8, mana, maxmana, maxHp, sila, classy, y, b=1, M[3],p=0,MB[1],B[1],exp = 10, n = 2, expi = 0, level = 1, skil1, skil2;
     string skill1,skill2,skill3,skill4,klass;
-    bool skilll1 = true,skilll2 = true;
+    bool skilll1 = true,skilll2 = true,jedovatadyka = false;
     cout << "----------------Vitej v RPG hre----------------"<< endl;
     cout << "Vyber si class: "<< endl;
     do{
@@ -754,6 +763,7 @@ int main(){
                     maxmana = 8;
                     skill1 = "Prurazna strela - ";
                     skill2 = " damage vsem nepratelum, mana - 4";
+                    skil1 = 6;
                     skill3 = "Ustupny vystrel - Vystreli a uskoci dozadu, mana - 3";
                     skilll2 = false;
                     klass = "strelec";
@@ -763,109 +773,121 @@ int main(){
     }while(y == 0);
 
     cout << "Prisli jste do vesnice" << endl;
-    vesnice(zlato, Hp, mana, sila, maxHp, maxmana,skil1,skil2,skilll1,skilll2);
+    vesnice(zlato, Hp, mana, sila, maxHp, maxmana,skil1,skil2,skilll1,skilll2,skill1,skill2,skill3,skill4);
     stats(Hp,sila,mana,maxmana,maxHp,zlato);
     cout << "--------------------------------------------" << endl;
     cout << "Potkali jste monstrum" << endl;
     b = 1;
-    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,M,b,p,expi,exp,level);
+    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,M,b,p,expi,exp,level,jedovatadyka);
     if(Hp <= 0){
         return 0;
     }
-    stats(Hp,sila,mana,maxmana,maxHp,zlato);
-    cout << "Potkali jste monstrum" << endl;
-    b = 1;
-    p = 0;
-    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,M,b,p,expi,exp,level);
-    if(Hp <= 0){
-        return 0;
-    }
-    stats(Hp,sila,mana,maxmana,maxHp,zlato);
-    cout << "Potkali jste 2 monstra" << endl;
-    b = 2;
-    p = 0;
-    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,M,b,p,expi,exp,level);
-    if(Hp <= 0){
-        return 0;
-    }
-    stats(Hp,sila,mana,maxmana,maxHp,zlato);
-    cout << "Potkali jste mini Bosse" << endl;
-    b = 1;
-    p = 0;
-    miniboss(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,MB,b,p,expi,exp,level);
-    if(Hp <= 0){
-        return 0;
-    }
-    stats(Hp,sila,mana,maxmana,maxHp,zlato);
-    cout << "Prisli jste do vesnice" << endl;
-    vesnice(zlato, Hp, mana, sila, maxHp, maxmana,skil1,skil2,skilll1,skilll2);
     stats(Hp,sila,mana,maxmana,maxHp,zlato);
     cout << "--------------------------------------------" << endl;
     cout << "Potkali jste monstrum" << endl;
     b = 1;
     p = 0;
-    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,M,b,p,expi,exp,level);
+    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,M,b,p,expi,exp,level,jedovatadyka);
     if(Hp <= 0){
         return 0;
     }
     stats(Hp,sila,mana,maxmana,maxHp,zlato);
+    cout << "--------------------------------------------" << endl;
     cout << "Potkali jste 2 monstra" << endl;
     b = 2;
     p = 0;
-    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,M,b,p,expi,exp,level);
+    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,M,b,p,expi,exp,level,jedovatadyka);
     if(Hp <= 0){
         return 0;
     }
     stats(Hp,sila,mana,maxmana,maxHp,zlato);
-    cout << "Potkali jste 2 monstra" << endl;
-    b = 2;
-    p = 0;
-    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,M,b,p,expi,exp,level);
-    if(Hp <= 0){
-        return 0;
-    }
-    stats(Hp,sila,mana,maxmana,maxHp,zlato);
+    cout << "--------------------------------------------" << endl;
     cout << "Potkali jste mini Bosse" << endl;
     b = 1;
     p = 0;
-    miniboss(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,MB,b,p,expi,exp,level);
+    miniboss(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,MB,b,p,expi,exp,level,jedovatadyka);
     if(Hp <= 0){
         return 0;
     }
     stats(Hp,sila,mana,maxmana,maxHp,zlato);
+    cout << "--------------------------------------------" << endl;
     cout << "Prisli jste do vesnice" << endl;
-    vesnice(zlato, Hp, mana, sila, maxHp, maxmana,skil1,skil2,skilll1,skilll2);
-    cout << "Potkali jste 2 monstra" << endl;
-    b = 2;
+    vesnice(zlato, Hp, mana, sila, maxHp, maxmana,skil1,skil2,skilll1,skilll2,skill1,skill2,skill3,skill4);
+    stats(Hp,sila,mana,maxmana,maxHp,zlato);
+    cout << "--------------------------------------------" << endl;
+    cout << "Potkali jste monstrum" << endl;
+    b = 1;
     p = 0;
-    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,M,b,p,expi,exp,level);
+    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,M,b,p,expi,exp,level,jedovatadyka);
     if(Hp <= 0){
         return 0;
     }
     stats(Hp,sila,mana,maxmana,maxHp,zlato);
+    cout << "--------------------------------------------" << endl;
     cout << "Potkali jste 2 monstra" << endl;
     b = 2;
     p = 0;
-    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,M,b,p,expi,exp,level);
+    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,M,b,p,expi,exp,level,jedovatadyka);
     if(Hp <= 0){
         return 0;
     }
     stats(Hp,sila,mana,maxmana,maxHp,zlato);
+    cout << "--------------------------------------------" << endl;
+    cout << "Potkali jste 2 monstra" << endl;
+    b = 2;
+    p = 0;
+    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,M,b,p,expi,exp,level,jedovatadyka);
+    if(Hp <= 0){
+        return 0;
+    }
+    stats(Hp,sila,mana,maxmana,maxHp,zlato);
+    cout << "--------------------------------------------" << endl;
+    cout << "Potkali jste mini Bosse" << endl;
+    b = 1;
+    p = 0;
+    miniboss(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,MB,b,p,expi,exp,level,jedovatadyka);
+    if(Hp <= 0){
+        return 0;
+    }
+    stats(Hp,sila,mana,maxmana,maxHp,zlato);
+    cout << "--------------------------------------------" << endl;
+    cout << "Prisli jste do vesnice" << endl;
+    vesnice(zlato, Hp, mana, sila, maxHp, maxmana,skil1,skil2,skilll1,skilll2,skill1,skill2,skill3,skill4);
+    cout << "Potkali jste 2 monstra" << endl;
+    b = 2;
+    p = 0;
+    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,M,b,p,expi,exp,level,jedovatadyka);
+    if(Hp <= 0){
+        return 0;
+    }
+    stats(Hp,sila,mana,maxmana,maxHp,zlato);
+    cout << "--------------------------------------------" << endl;
+    cout << "Potkali jste 2 monstra" << endl;
+    b = 2;
+    p = 0;
+    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,M,b,p,expi,exp,level,jedovatadyka);
+    if(Hp <= 0){
+        return 0;
+    }
+    stats(Hp,sila,mana,maxmana,maxHp,zlato);
+    cout << "--------------------------------------------" << endl;
     cout << "Potkali jste 3 monstra" << endl;
     b = 3;
     p = 0;
-    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,M,b,p,expi,exp,level);
+    monstrum(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,M,b,p,expi,exp,level,jedovatadyka);
     if(Hp <= 0){
         return 0;
     }
     stats(Hp,sila,mana,maxmana,maxHp,zlato);
+    cout << "--------------------------------------------" << endl;
     cout << "Prisli jste do vesnice" << endl;
-    vesnice(zlato, Hp, mana, sila, maxHp, maxmana,skil1,skil2,skilll1,skilll2);
+    vesnice(zlato, Hp, mana, sila, maxHp, maxmana,skil1,skil2,skilll1,skilll2,skill1,skill2,skill3,skill4);
     stats(Hp,sila,mana,maxmana,maxHp,zlato);
+    cout << "--------------------------------------------" << endl;
     cout << "Potkali jste hlavniho bosse" << endl;
     b = 3;
     p = 0;
-    Geargrind(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,B,b,p);
+    Geargrind(zlato, Hp, mana, sila, maxHp, maxmana,skill1,skill2,skill3,skill4,skil1,skil2,skilll1,skilll2,klass,B,b,p,jedovatadyka);
     if(Hp <= 0){
         return 0;
     }
